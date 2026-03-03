@@ -46,6 +46,6 @@ Denser characters produce/ represent darker color variations.
 
 ## Output
 
-The program will generate a `.ppm` image file that can be opened in most standard image viewers as an image file.
+The program will generate a Portable Pixel map `.ppm` image file that can be opened in most standard image viewers as an image file.
 
 Each ASCII character will represent and become a colored pixel block in the final outputted image.
