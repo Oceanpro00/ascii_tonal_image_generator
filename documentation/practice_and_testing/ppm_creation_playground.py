@@ -63,20 +63,25 @@ def color_gradient(image_height, image_width):
     pixel_count = image_height * image_width
     color_steps = 765 / pixel_count
     ppm_string = ""
+    progress = 0
     
 
     # P3 PPM Row Loop function
     for row in range(image_height):
         for pixel in range(image_width):
-            if red < 255:
-                ppm_string += f"{int(red)} {int(green)} {int(blue)} "
-                red += color_steps
-            elif green < 255:
-                ppm_string += f"{int(red)} {int(green)} {int(blue)} "
-                green += color_steps
-            elif blue < 255:
-                ppm_string += f"{int(red)} {int(green)} {int(blue)} "
-                blue += color_steps
+            progress += color_steps
+            if progress < 255:
+                red = int(progress)
+                ppm_string += f"{red} {green} {blue} "
+            elif progress < 510:
+                red = 255
+                green = int(progress) - 255
+                ppm_string += f"{red} {green} {blue} "
+            else:
+                red = 255
+                green = 255
+                blue = int(progress) - 510
+                ppm_string += f"{red} {green} {blue} "
         ppm_string += "\n"
     
     return ppm_string
