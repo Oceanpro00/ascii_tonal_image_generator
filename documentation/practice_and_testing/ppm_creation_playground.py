@@ -35,8 +35,8 @@ ppm file structure: https://netpbm.sourceforge.net/doc/ppm.html
 # Define Header Variables
 image_ppm_header_type = "P3"
 
-image_width = 5
-image_height = 3
+image_width = 10
+image_height = 10
 
 image_max_color_value = 255
 
@@ -51,56 +51,47 @@ image_header = f"{image_ppm_header_type}\n{image_width} {image_height}\n{image_m
 #       -  P3 structure can be printed in console but visualization only possible in output
 # =============================================================================
 
-# Define Color Variable
-red = 0
-green = 0
-blue = 0
+# Color Gradient Function
+def color_gradient(image_height, image_width):
 
-# P3 PPM Loop function
-for row in range(image_height):
-    row_string = ""
+    # Define Color Variable
+    red = 0
+    green = 0
+    blue = 0
+
+    # Define Variables
+    pixel_count = image_height * image_width
+    color_steps = 765 / pixel_count
+    ppm_string = ""
     
-    for pixel in range(image_width):
-        if red < 255:
-            row_string += f"{red} {green} {blue} "
-            red += 51
-        elif green < 255:
-            row_string += f"{red} {green} {blue} "
-            green += 51
-        elif blue < 255:
-            row_string += f"{red} {green} {blue} "
-            blue += 51
-        else:
-            red = 0
-            green = 0
-            blue = 0
-            row_string += f"{red} {green} {blue} "
-    print(row_string)
 
+    # P3 PPM Row Loop function
+    for row in range(image_height):
+        for pixel in range(image_width):
+            if red < 255:
+                ppm_string += f"{int(red)} {int(green)} {int(blue)} "
+                red += color_steps
+            elif green < 255:
+                ppm_string += f"{int(red)} {int(green)} {int(blue)} "
+                green += color_steps
+            elif blue < 255:
+                ppm_string += f"{int(red)} {int(green)} {int(blue)} "
+                blue += color_steps
+        ppm_string += "\n"
+    
+    return ppm_string
+
+
+# Test output
+for i in range(image_height):
+    print(color_gradient(image_height, image_width))
 
 # writing out a file using python I/O
 with open("../../image_outputs/temp_output.ppm", "w") as ppm_file:
     
     ppm_file.write(image_header)
-    print(f"image header values:\n{image_header}have been added to the PPM file")
+    print(f"The image header values:\n{image_header}have been added to the PPM file\n")
     
-    for row in range(image_height):
-        row_string = ""
-        
-        for pixel in range(image_width):
-            if red < 255:
-                row_string += f"{red} {green} {blue} "
-                red += 51
-            elif green < 255:
-                row_string += f"{red} {green} {blue} "
-                green += 51
-            elif blue < 255:
-                row_string += f"{red} {green} {blue} "
-                blue += 51
-            else:
-                red = 0
-                green = 0
-                blue = 0
-                row_string += f"{red} {green} {blue} "
-        ppm_file.write(row_string+"\n")
-        print(f"row number {row + 1} has been added to the PPM file")
+    ppm_data = color_gradient(image_height, image_width)
+    ppm_file.write(ppm_data)
+    print(f"A total of {len(ppm_data.splitlines())} lines have been added to the PPM file")
