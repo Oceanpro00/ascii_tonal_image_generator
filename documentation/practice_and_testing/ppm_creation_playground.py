@@ -35,8 +35,8 @@ ppm file structure: https://netpbm.sourceforge.net/doc/ppm.html
 # Define Header Variables
 image_ppm_header_type = "P3"
 
-image_width = 10
-image_height = 10
+image_width = 100
+image_height = 130
 
 image_max_color_value = 255
 
