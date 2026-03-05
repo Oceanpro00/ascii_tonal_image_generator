@@ -33,11 +33,8 @@ Color Tonal Depth affecting RGB
 #
 # =============================================================================
 
-# Declare Variables
-color_selected = []
-
 # Color Selection Dictionary
-colors_dict = {
+basic_colors_dict = {
     "red" : (255,0,0),
     "orange" : (255,128,0),
     "yellow" : (255,255,0),
@@ -52,30 +49,87 @@ colors_dict = {
     "black" : (0,0,0)
     }
 
-# User input
-user_color_selection = input("\nWhat color would you like to use today?\n")
-
-# While Loop Parsing and/ or Confirming Color Selection
-while len(color_selected) < 1:
-    if user_color_selection.lower() in colors_dict:
-        color_selected = colors_dict[user_color_selection.lower()]
-    else:
-        check_one = input("\nAre you sure you input that color name correctly? y or n\n* this is a simple system, typos will break it\n")
-        if check_one == 'n':
-            user_color_selection = input("\nWhat color would you like to use today?\n")
+# If statement function to get user color selection 
+def user_color_select(colors):
+    
+    # Declare Variables
+    color_selected = []
+    
+    # User input
+    user_color_selection = input("\nWhat color would you like to use today?\n")
+    
+    # While Loop Parsing and/ or Confirming Color Selection
+    while len(color_selected) < 1:
+        if user_color_selection.lower() in colors:
+            color_selected = colors[user_color_selection.lower()]
         else:
-            check_two = input(f"\nIm sorry '{user_color_selection}' is not a color we have listed, would you like to retry, input the RGB code directly or Give up? 1 or 2 or 3\n  (1) Retry\n  (2) Input RGB\n  (3) Give Up\n")
-            if check_two == "1":
+            check_one = input("\nAre you sure you input that color name correctly? y or n\n* this is a simple system, typos will break it\n")
+            if check_one == 'n':
                 user_color_selection = input("\nWhat color would you like to use today?\n")
-            elif check_two == "2":
-                red_code = int(input("\nThe Red decimal code (0 - 255) in the RGB is\n"))
-                green_code = int(input("\nThe Green decimal code (0 - 255) in the RGB is\n"))
-                blue_code = int(input("\nThe Blue decimal code (0 - 255) in the RGB is\n"))
-                color_selected.append(red_code)
-                color_selected.append(green_code)
-                color_selected.append(blue_code)
             else:
-                color_selected.append(None)
-       
-# Test Color RGB Selection 
-print(color_selected)
+                check_two = input(f"\nIm sorry '{user_color_selection}' is not a color we have listed, would you like to retry, input the RGB code directly or Give up? 1 or 2 or 3\n  (1) Retry\n  (2) Input RGB\n  (3) Give Up\n")
+                if check_two == "1":
+                    user_color_selection = input("\nWhat color would you like to use today?\n")
+                elif check_two == "2":
+                    red_code = int(input("\nThe Red decimal code (0 - 255) in the RGB is\n"))
+                    green_code = int(input("\nThe Green decimal code (0 - 255) in the RGB is\n"))
+                    blue_code = int(input("\nThe Blue decimal code (0 - 255) in the RGB is\n"))
+                    color_selected.append(red_code)
+                    color_selected.append(green_code)
+                    color_selected.append(blue_code)
+                else:
+                    color_selected.append(None)
+           
+    # Return Color RGB Selection 
+    return(color_selected)
+
+# Test Function
+# print(user_color_select(basic_colors_dict))
+
+
+# =============================================================================
+# If I'm allowed to at least parse a csv file then I could do:
+# =============================================================================
+
+# Define Variables
+colors_csv_filepath = "../color_dataset/color_names_kaggle.csv"
+colors_dict = {}
+
+# Open and read CSV file
+colors_csv = open(colors_csv_filepath, "r").read()
+
+# Loop to turn CSV text into a Dictionary
+for line in colors_csv.splitlines():
+    color_line = line.split(",")
+    color_line[0] = color_line[0].strip(('"'))
+    
+    if color_line[0] != "Name":
+        # Declare Color Name String and RGB Values
+        color_name = color_line[0].lower()
+        color_r = int(color_line[2])
+        color_g = int(color_line[3])
+        color_b = int(color_line[4])
+        
+        # Add Dictionary Entries
+        colors_dict[color_name] = [color_r, color_g, color_b]
+
+
+# Test Color Picker Function
+print(user_color_select(colors_dict))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
