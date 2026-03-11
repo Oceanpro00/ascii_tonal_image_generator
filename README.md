@@ -82,6 +82,7 @@ ascii_tonal_image_generator/
 │
 ├── .gitignore
 └── README.md
+```
 
 ---
 
