@@ -115,7 +115,51 @@ for line in colors_csv.splitlines():
 
 
 # Test Color Picker Function
-print(user_color_select(colors_dict))
+# print(user_color_select(colors_dict))
+
+
+# =============================================================================
+# Make n tonal variations of the selected color
+# =============================================================================
+
+# Color Picker Test Variable
+color_picker = user_color_select(basic_colors_dict)
+
+# Define Variables
+n_steps = 10   # TONAL Variation number (maybe will turn later input an input statement)
+r_code = 0
+g_code = 0
+b_code = 0
+
+# Define Resulting empty dictionary
+color_range = {}
+
+# for loop setting color range
+for i in range(n_steps):
+    if n_steps % 2 ==0:
+        if i == 0:
+            r_code
+        elif i < (n_steps/2-1):
+            r_code += (color_picker[0]) / (n_steps/2 - 1)
+            g_code += (color_picker[1]) / (n_steps/2 - 1)
+            b_code += (color_picker[2]) / (n_steps/2 - 1)
+        elif i >= (n_steps/2):
+            r_code += (255 - color_picker[0]) / (n_steps/2)
+            g_code += (255 - color_picker[1]) / (n_steps/2)
+            b_code += (255 - color_picker[2]) / (n_steps/2)
+        else:
+            r_code = color_picker[0]
+            g_code = color_picker[1]
+            b_code = color_picker[2]
+    
+    color_range[i] = [int(r_code),int(g_code),int(b_code)]
+
+print(color_range)
+
+
+# =============================================================================
+# Test PPM creation
+# =============================================================================
 
 
 

@@ -3,7 +3,7 @@
 """
 Created on Tue Mar  3 11:23:16 2026
 
-PPM File creation Playaround
+PPM File creation Playground
 
 Learning from - 
 ppm header structure: https://solarianprogrammer.com/2017/10/25/ppm-image-python-3/
