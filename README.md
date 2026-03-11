@@ -57,28 +57,30 @@ The output image visually reconstructs the ASCII tonal structure in color form.
 
 ## Project Structure
 
+```text
 ascii_tonal_image_generator/
 │
-├── ascii_example_art/ # Sample ASCII input files
-│ ├── ascii-art-smallbanana.txt
-│ └── ascii-art-treefrog.txt
+├── ascii_example_art/
+│   ├── ascii-art-smallbanana.txt
+│   └── ascii-art-treefrog.txt
 │
-├── image_outputs/ # Generated PPM image files
-│ └── temp_output.ppm
+├── image_outputs/
+│   └── temp_output.ppm
 │
 ├── scripts/
-│ └── ascii_tonal_image_generation_script.py
+│   └── ascii_tonal_image_generation_script.py
 │
 ├── documentation/
-│ ├── cps109_project_outline.pdf
-│ ├── practice_and_testing/
-│ │ ├── ppm_creation_playground.py
-│ │ └── color_selection_and_tonal_range_trial.py
-│ ├── color_dataset/
-│ │ └── color_names_kaggle.csv
-│ └── ppm_examples_foundonweb/
-│ └── simple.ppm
+│   ├── cps109_project_outline.pdf
+│   ├── practice_and_testing/
+│   │   ├── ppm_creation_playground.py
+│   │   └── color_selection_and_tonal_range_trial.py
+│   ├── color_dataset/
+│   │   └── color_names_kaggle.csv
+│   └── ppm_examples_foundonweb/
+│       └── simple.ppm
 │
+├── .gitignore
 └── README.md
 
 ---
