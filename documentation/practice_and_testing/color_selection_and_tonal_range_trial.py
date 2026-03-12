@@ -119,17 +119,14 @@ for line in colors_csv.splitlines():
 
 
 # =============================================================================
-# Make n tonal variations of the selected color
+# Make n number tonal variations of the selected color
 # =============================================================================
 
 # Color Picker Test Variable
 color_picker = user_color_select(basic_colors_dict)
 
 # Define Variables
-n_steps = 10   # TONAL Variation number (maybe will turn later input an input statement)
-r_code = 0
-g_code = 0
-b_code = 0
+n_steps = 11   # TONAL Variation number (maybe will turn later input an input statement)
 
 # Define Resulting empty dictionary
 color_range = {}
@@ -138,7 +135,9 @@ color_range = {}
 for i in range(n_steps):
     if n_steps % 2 ==0:
         if i == 0:
-            r_code
+            r_code = 0
+            g_code = 0
+            b_code = 0
         elif i < (n_steps/2-1):
             r_code += (color_picker[0]) / (n_steps/2 - 1)
             g_code += (color_picker[1]) / (n_steps/2 - 1)
@@ -151,20 +150,67 @@ for i in range(n_steps):
             r_code = color_picker[0]
             g_code = color_picker[1]
             b_code = color_picker[2]
+    else:
+        if i == 0:
+            r_code = 0
+            g_code = 0
+            b_code = 0
+        elif i < (n_steps/2):
+            r_code += (color_picker[0]) / (n_steps/2)
+            g_code += (color_picker[1]) / (n_steps/2)
+            b_code += (color_picker[2]) / (n_steps/2)
+        elif i >= (n_steps/2):
+            r_code += (255 - color_picker[0]) / (n_steps/2)
+            g_code += (255 - color_picker[1]) / (n_steps/2)
+            b_code += (255 - color_picker[2]) / (n_steps/2)
+        else:
+            r_code = color_picker[0]
+            g_code = color_picker[1]
+            b_code = color_picker[2]
     
     color_range[i] = [int(r_code),int(g_code),int(b_code)]
 
-print(color_range)
+# Test Color Range print
+# print(color_range)
 
 
 # =============================================================================
 # Test PPM creation
 # =============================================================================
 
+# Define Header Variables
+image_ppm_header_type = "P3"
 
+image_width = n_steps
+image_height = 1
 
+image_max_color_value = 255
 
+image_header = f"{image_ppm_header_type}\n{image_width} {image_height}\n{image_max_color_value}\n"
 
+# Define Output String
+ppm_output_str = ""
+
+# Color swatch test print Variable (essentially placeholder of the input text file)
+color_swatch = [i for i in range(n_steps)]
+
+# Turn color swatch list into ppm data
+for i in range(len(color_swatch)):
+    if color_swatch[i] in color_range.keys():
+        ppm_output_str += f"{color_range[color_swatch[i]][0]} {color_range[color_swatch[i]][1]} {color_range[color_swatch[i]][2]} "
+
+# Test output string
+# print(ppm_output_str)
+        
+
+# writing out a file using python I/O
+with open("../../image_outputs/tonal_test.ppm", "w") as ppm_file:
+    
+    ppm_file.write(image_header)
+    print(f"The image header values:\n{image_header}have been added to the PPM file\n")
+    
+    ppm_file.write(ppm_output_str)
+    print(f"A total of {len(ppm_output_str.splitlines())} lines have been added to the PPM file")
 
 
 
