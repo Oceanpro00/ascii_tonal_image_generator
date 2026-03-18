@@ -13,7 +13,7 @@ Project: ascii_tonal_image_generator
 # =============================================================================
 
 # Define Filepaths
-example_filepath = "../ascii_example_art/ascii-art-treefrog.txt"
+example_filepath = "../ascii_example_art/ascii-art-leaffrog.txt"
 
 # Open ascii art .txt file
 img_ascii_artfile = open(example_filepath)
@@ -201,24 +201,7 @@ def pixelize_ascii(ascii_str, name):
 
 
 
-pixelize_ascii(ascii_art_string, "file_001")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+pixelize_ascii(ascii_art_string, "file_002")
 
 
 
