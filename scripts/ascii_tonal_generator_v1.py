@@ -5,6 +5,19 @@ Created on Tue Mar  3 10:51:07 2026
 
 Project: ascii_tonal_image_generator
 
+
+
+This file was the first intial working version of this project, it is:
+    - clunky
+    - messy code
+    - only can do basic white to black color tone gen
+    
+This file has as such been renamed:
+    
+    ascii_tonal_image_generation_script.py   --->  ascii_tonal_generator_v1.py
+
+
+
 @author: seanschallberger
 """
 
