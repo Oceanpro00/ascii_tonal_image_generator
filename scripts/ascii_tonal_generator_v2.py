@@ -24,7 +24,7 @@ Prime Targets:
 def pick_file_name():
     
     # Define Function 1 Variables
-    test_file_names = ["ascii-art-leaffrog", "ascii-art-smallbanana", "ascii-art-treefrog"]
+    test_file_names = ["ascii-art-leaffrog", "ascii-art-smallbanana", "ascii-art-treefrog", "ascii-art-treefrog copy"]
     chosen_filepath = ""
     
     # Start Up Statement
@@ -48,6 +48,7 @@ def pick_file_name():
             else:
                 chosen_filepath = custom_filepath + ".txt"
     
+    # Return the chosen file path
     return chosen_filepath
 
 
@@ -56,11 +57,37 @@ def pick_file_name():
 #   
 #   - finds and opens file based on File path input
 #   - Check File compatability with code
-#       - Currently ascii tonal art needs to be a set width and height throughout the artwork (no Free Form ascii Art)
+#       * Currently the ascii tonal art needs to be a set width and height throughout the artwork (no Free Form ascii Art) as the code needs to create a properly sized ppm file
 # =============================================================================
 
-
-
+def file_open(filepath):
+    
+    # Open and Read Ascii Art File
+    file_contents_string = open(filepath).read()
+    file_compatibility = True
+    non_compatible_rows = []
+    
+    # Check File Compatibility
+    # Find Image Dimensions (Height & Width)
+    image_height = len(file_contents_string.splitlines())
+    image_width = len(file_contents_string.splitlines()[0])
+    
+    # Check that all rows have same width and thus file is compatible
+    for row in range(image_height):
+        if len(file_contents_string.splitlines()[row]) != image_width:
+            non_compatible_rows.append(str(row))
+            file_compatibility = False
+    
+    # Designate Compatibility
+    if file_compatibility == True:
+        # Return the file Contents
+        return file_contents_string
+    
+    else:
+        print(f"I'm sorry it seems the file you picked is not compatible with this current system version.\nPlease make sure all rows are the same length as the top row which has a length of {image_width} characters.\n\nBe advised your file failed on line(s) {', '.join(non_compatible_rows)}")
+    
+    
+    
 # =============================================================================
 # Function Test Section (Temp)
 # =============================================================================
@@ -68,3 +95,7 @@ def pick_file_name():
 # Test Function 1 - Returns Filepath 
 test_filepath = pick_file_name()
 print("\n" + test_filepath)
+
+# Test Function 2 - Returns file contents
+test_file_contents = file_open(test_filepath)
+print("\n" + test_file_contents)
