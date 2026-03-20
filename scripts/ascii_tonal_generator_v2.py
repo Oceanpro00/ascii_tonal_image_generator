@@ -33,6 +33,7 @@ def pick_file_name():
     # File Name/ Path defining    -->  Returns file filepath from here
     if run_check.lower() == "n":
         print("\nOkay! Till next time!")
+        return None
     else:
         test_or_custom = input("\nAmazing! do you want to generate one using one of the example test files or your own ascii art file??\n\nPlease Input 0/1\n  0  -  Use a test file\n  1  -  Use your own file\n\nInput:\n")
         if test_or_custom == "0":
@@ -85,17 +86,35 @@ def file_open(filepath):
     
     else:
         print(f"I'm sorry it seems the file you picked is not compatible with this current system version.\nPlease make sure all rows are the same length as the top row which has a length of {image_width} characters.\n\nBe advised your file failed on line(s) {', '.join(non_compatible_rows)}")
+        return None
     
-    
-    
+
+
+
 # =============================================================================
 # Function Test Section (Temp)
+# 
+# **EDITS**
+#   - Realized that ill need failsafes between the functions otherwise whole program can fail  
+#       - Fail safes using if statements work but require None type returns and can still give certain errors
+#       - Try and Except may be best used around certain sections
 # =============================================================================
+
 
 # Test Function 1 - Returns Filepath 
 test_filepath = pick_file_name()
-print("\n" + test_filepath)
 
-# Test Function 2 - Returns file contents
-test_file_contents = file_open(test_filepath)
-print("\n" + test_file_contents)
+# Function 1 logic gate
+if test_filepath != None:
+    
+    # Test print 1
+    print("\n" + test_filepath)
+        
+    # Test Function 2 - Returns file contents
+    test_file_contents = file_open(test_filepath)
+    
+    # Function 2 Logic Gate
+    if test_file_contents != None:
+        
+        # Test print 2
+        print("\n" + test_file_contents)
