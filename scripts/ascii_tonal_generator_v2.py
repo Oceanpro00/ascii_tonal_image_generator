@@ -82,14 +82,29 @@ def file_open(filepath):
     # Designate Compatibility
     if file_compatibility == True:
         # Return the file Contents
-        return file_contents_string
+        return file_contents_string, image_width, image_height
     
     else:
         print(f"I'm sorry it seems the file you picked is not compatible with this current system version.\nPlease make sure all rows are the same length as the top row which has a length of {image_width} characters.\n\nBe advised your file failed on line(s) {', '.join(non_compatible_rows)}")
-        return None
+        return None, None, None
+
+
+# =============================================================================
+# Function 3: PPM File Header Creator
+# 
+#   - Creates header string based on opened ascii file
+# =============================================================================
+
+def ppm_header(ascii_string, image_width, image_height):
     
-
-
+    # PPM type
+    header_type = "P3"
+    
+    # Max color Value
+    color_max = 255
+    
+    return f"{header_type}\n{image_width} {image_height}\n{color_max}"
+    
 
 # =============================================================================
 # Function Test Section (Temp)
@@ -97,7 +112,7 @@ def file_open(filepath):
 # **EDITS**
 #   - Realized that ill need failsafes between the functions otherwise whole program can fail  
 #       - Fail safes using if statements work but require None type returns and can still give certain errors
-#       - Try and Except may be best used around certain sections
+#       - Try and Except may be best used around certain sections for certain error types
 # =============================================================================
 
 
@@ -109,12 +124,16 @@ if test_filepath != None:
     
     # Test print 1
     print("\n" + test_filepath)
-        
-    # Test Function 2 - Returns file contents
-    test_file_contents = file_open(test_filepath)
     
-    # Function 2 Logic Gate
-    if test_file_contents != None:
+    # Try to find the file with a failsafe through try
+    try:
+        # Test Function 2 - Returns file contents
+        test_file_contents, ascii_width, ascii_height = file_open(test_filepath)
         
-        # Test print 2
-        print("\n" + test_file_contents)
+    except FileNotFoundError:
+        print("I'm Sorry, the file you requested was not found.\n\nPlease check the file directory again to make you didnt mistype the filename and that the file is in the right location.")
+    
+    else:
+        if test_file_contents != None:
+            # Test print 2
+            print("\n" + test_file_contents)
