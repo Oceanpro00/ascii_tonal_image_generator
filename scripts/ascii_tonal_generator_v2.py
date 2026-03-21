@@ -33,9 +33,10 @@ def pick_file_path():
     # File Name/ Path defining    -->  Returns file filepath from here
     if run_check.lower() == "n":
         print("\nOkay! Till next time!")
-        return None
+        return None, None
     else:
-        test_or_custom = input("\nAmazing! do you want to generate one using one of the example test files or your own ascii art file??\n\nPlease Input 0/1\n  0  -  Use a test file\n  1  -  Use your own file\n\nInput:\n")
+        name = input("\nThats awesome! What would you like to name the file?\n\nInput:\n")
+        test_or_custom = input("\nIncredible name! do you want to generate one using one of the example test files or your own ascii art file??\n\nPlease Input 0/1\n  0  -  Use a test file\n  1  -  Use your own file\n\nInput:\n")
         if test_or_custom == "0":
             print("\nOkay input the file number you want to test!")
             for i in range(len(test_file_names)):
@@ -50,7 +51,7 @@ def pick_file_path():
                 chosen_filepath = custom_filepath + ".txt"
     
     # Return the chosen file path
-    return chosen_filepath
+    return chosen_filepath, name
 
 
 # =============================================================================
@@ -107,18 +108,21 @@ def create_ppm_header(image_width, image_height):
     
 
 # =============================================================================
-# Function 4: Color Selection Function
+# Function 4 & 4.5: Color Selection Function
 # 
 #   - Input and If Statement Loop to prompt user to select color
 #       - Allow user to confirm and pick proper color names
 #   - Color name input is converted to a RGB code
 #       - Import color list from csv file sourced from kaggle
+#
+#   - v2 improvements:
+#       - allow code to function/ make sense even if called up multiple times
+#       - check user color selection when color name not found and offer up alternative colors
 # =============================================================================
 
-def color_selections():
+def color_set():
     
     # Declare Variables
-    color_selected = []
     colors_csv_filepath = "../documentation/color_dataset/color_names_kaggle.csv"
     colors = {}
     
@@ -141,7 +145,16 @@ def color_selections():
             # Add Dictionary Entries
             colors[color_name] = [color_r, color_g, color_b]
             
+    # Return Color Directory
+    return colors
             
+
+def color_selection():  
+    
+    # Declare Variables
+    color_selected = []
+    colors = color_set()
+          
     # ** Prompting Color Selection **
     # User input
     user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
@@ -151,11 +164,46 @@ def color_selections():
         if user_color_selection.lower() in colors:
             color_selected = colors[user_color_selection.lower()]
         else:
-            check_one = input("\nAre you sure you input that color name correctly? y or n\n* this is a simple system, typos will break it\n\nInput:\n")
-            if check_one == 'n':
-                user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
+            print(f"\nIm sorry '{user_color_selection}' is not a color we have listed in our dataset.")
+            
+            # Search and list potential options
+            potentials = []
+            page = 1
+            check_one = "n"
+            
+            # Searching and Collating
+            for color in colors.keys():
+                if user_color_selection in color:
+                    potentials.append(color)
+            
+            if len(potentials) != 0:
+                while check_one == "n":
+                    
+                    # Printing by page
+                    print("Could it be any of:")
+                    for i in range((page-1)*5, page * 5):
+                        print(f"   {i}  - {potentials[i]}")
+                    print(f"\npage# ({page}/{(len(potentials)//5)})\n")
+                    
+                    # Cycle pages
+                    if page < (len(potentials)//5):
+                        page += 1
+                    else:
+                        page = 1
+                    
+                    check_one = input("Do you see the color you wanted above?\n   If yes,   Please Input the number listed with the color above\n   For next page,   Please input n\n   To quit,   Please Input q\n\nInput:\n")
+                    
+                # Make sure entry is viable 
+                if check_one.isdigit():
+                    color_selected = colors[potentials[min((int(check_one)), (len(potentials) - 1))]]
+                
+                else:
+                    color_selected.append(None)
+                    
             else:
-                check_two = input(f"\nIm sorry '{user_color_selection}' is not a color we have listed.\nWould you like to retry, input the RGB code directly or Give up?\n\nPlease Input 1 or 2 or 3\n  1  - Retry\n  2  - Input RGB\n  3  - Give Up\n\nInput:\n")
+                # Default Last Check
+                check_two = input("\nOkay Sorry I guess we really don't have '{user_color_selection}' in our dataset.\nWould you like to retry with another color, input an RGB code directly or Give up?\n\nPlease Input 1 or 2 or 3\n  1  - Retry\n  2  - Input RGB\n  3  - Give Up\n\nInput:\n")
+                
                 if check_two == "1":
                     user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
                 elif check_two == "2":
@@ -167,9 +215,10 @@ def color_selections():
                     color_selected.append(blue_code)
                 else:
                     color_selected.append(None)
-           
+       
     # Return Color RGB Selection 
     return(color_selected)
+
 
 # =============================================================================
 # Function 5: Ascii Ramp --> Color Swatch Generator
@@ -274,10 +323,10 @@ def output_ppm(name, header, contents, image_height, image_width):
 #   - Calls all functions above with failsafes and such as tested below
 # =============================================================================
 
-def pixelize_ascii(name):
+def pixelize_ascii():
     
     # Function 1 - Determine File path
-    filepath = pick_file_path()
+    filepath, name = pick_file_path()
     
     if filepath != None:
         try:
@@ -296,7 +345,7 @@ def pixelize_ascii(name):
                 ppm_header = create_ppm_header(ascii_width, ascii_height)
                 
                 # Function 4 - User Color Selection Tool
-                selected_rgb = color_selections()
+                selected_rgb = color_selection()
                 
                 if selected_rgb[0] != None:
                     
@@ -314,7 +363,7 @@ def pixelize_ascii(name):
 # RUN FUNCTION
 # =============================================================================
 
-pixelize_ascii("Final 001")
+pixelize_ascii()
 
 
 
@@ -329,7 +378,7 @@ pixelize_ascii("Final 001")
 
 """
 # Test Function 1 - Returns Filepath 
-test_filepath = pick_file_path()
+test_filepath, test_name = pick_file_path()
 
 if test_filepath != None:
     
@@ -378,6 +427,6 @@ if test_filepath != None:
                 # print(test_ppm_contents)
                 
                 # Test Function 7 - Output ppm File 
-                output_ppm("test001", test_ppm_header, test_ppm_contents, test_ascii_height, test_ascii_width)
+                output_ppm(test_name, test_ppm_header, test_ppm_contents, test_ascii_height, test_ascii_width)
 
 """
