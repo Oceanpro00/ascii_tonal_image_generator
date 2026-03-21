@@ -24,7 +24,7 @@ Prime Targets:
 def pick_file_name():
     
     # Define Function 1 Variables
-    test_file_names = ["ascii-art-leaffrog", "ascii-art-smallbanana", "ascii-art-treefrog", "ascii-art-treefrog copy"]
+    test_file_names = ["ascii-art-leaffrog", "ascii-art-smallbanana", "ascii-art-treefrog"]
     chosen_filepath = ""
     
     # Start Up Statement
@@ -95,16 +95,140 @@ def file_open(filepath):
 #   - Creates header string based on opened ascii file
 # =============================================================================
 
-def ppm_header(ascii_string, image_width, image_height):
+def create_ppm_header(ascii_string, image_width, image_height):
     
     # PPM type
     header_type = "P3"
     
-    # Max color Value
+    # Max RGB color Value
     color_max = 255
     
     return f"{header_type}\n{image_width} {image_height}\n{color_max}"
     
+
+# =============================================================================
+# Function 4: Color Selection Function
+# 
+#   - Input and If Statement Loop to prompt user to select color
+#       - Allow user to confirm and pick proper color names
+#   - Color name input is converted to a RGB code
+#       - Import color list from csv file sourced from kaggle
+# =============================================================================
+
+def color_selections():
+    
+    # Declare Variables
+    color_selected = []
+    colors_csv_filepath = "../documentation/color_dataset/color_names_kaggle.csv"
+    colors = {}
+    
+    # ** Creating Color Database **
+    # Open and read Color CSV
+    colors_csv = open(colors_csv_filepath, "r").read()
+
+    # Loop to turn CSV text into a Dictionary
+    for line in colors_csv.splitlines():
+        color_line = line.split(",")
+        color_line[0] = color_line[0].strip(('"'))
+        
+        if color_line[0] != "Name":
+            # Declare Color Name String and RGB Values
+            color_name = color_line[0].lower()
+            color_r = int(color_line[2])
+            color_g = int(color_line[3])
+            color_b = int(color_line[4])
+            
+            # Add Dictionary Entries
+            colors[color_name] = [color_r, color_g, color_b]
+            
+            
+    # ** Prompting Color Selection **
+    # User input
+    user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
+    
+    # While Loop Parsing and/ or Confirming Color Selection
+    while len(color_selected) < 1:
+        if user_color_selection.lower() in colors:
+            color_selected = colors[user_color_selection.lower()]
+        else:
+            check_one = input("\nAre you sure you input that color name correctly? y or n\n* this is a simple system, typos will break it\n\nInput:\n")
+            if check_one == 'n':
+                user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
+            else:
+                check_two = input(f"\nIm sorry '{user_color_selection}' is not a color we have listed, would you like to retry, input the RGB code directly or Give up? 1 or 2 or 3\n  (1) Retry\n  (2) Input RGB\n  (3) Give Up\n\nInput:\n")
+                if check_two == "1":
+                    user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
+                elif check_two == "2":
+                    red_code = int(input("\nThe Red decimal code (0 - 255) in the RGB is\n\nInput:\n"))
+                    green_code = int(input("\nThe Green decimal code (0 - 255) in the RGB is\n\nInput:\n"))
+                    blue_code = int(input("\nThe Blue decimal code (0 - 255) in the RGB is\n\nInput:\n"))
+                    color_selected.append(red_code)
+                    color_selected.append(green_code)
+                    color_selected.append(blue_code)
+                else:
+                    color_selected.append(None)
+           
+    # Return Color RGB Selection 
+    return(color_selected)
+
+# =============================================================================
+# Function 5: Ascii Ramp --> Color Swatch Generator
+# 
+#   - Creates a Dictionare relating the Defined Ascii Character Ramp to RGB color codes
+#       - v1 currently only does black -> selected color -> white  (COMPLETE)
+#       - v2 is hoped to have multiple methods  (PROPOSED)
+# =============================================================================
+
+def ascii_color_swatch(color_selected):
+    
+    # Define Base Character Ramp
+    character_ramp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
+    
+    # Declare Variables
+    color_range = {}
+    n_steps = len(character_ramp)
+
+    # for loop setting color range
+    for i in range(n_steps):
+        if n_steps % 2 ==0:
+            if i == 0:
+                r_code = 0
+                g_code = 0
+                b_code = 0
+            elif i < (n_steps/2-1):
+                r_code += (color_selected[0]) / (n_steps/2 - 1)
+                g_code += (color_selected[1]) / (n_steps/2 - 1)
+                b_code += (color_selected[2]) / (n_steps/2 - 1)
+            elif i >= (n_steps/2):
+                r_code += (255 - color_selected[0]) / (n_steps/2)
+                g_code += (255 - color_selected[1]) / (n_steps/2)
+                b_code += (255 - color_selected[2]) / (n_steps/2)
+            else:
+                r_code = color_selected[0]
+                g_code = color_selected[1]
+                b_code = color_selected[2]
+        else:
+            if i == 0:
+                r_code = 0
+                g_code = 0
+                b_code = 0
+            elif i < (n_steps/2):
+                r_code += (color_selected[0]) / (n_steps/2)
+                g_code += (color_selected[1]) / (n_steps/2)
+                b_code += (color_selected[2]) / (n_steps/2)
+            elif i >= (n_steps/2):
+                r_code += (255 - color_selected[0]) / (n_steps/2)
+                g_code += (255 - color_selected[1]) / (n_steps/2)
+                b_code += (255 - color_selected[2]) / (n_steps/2)
+            else:
+                r_code = color_selected[0]
+                g_code = color_selected[1]
+                b_code = color_selected[2]
+        
+        color_range[character_ramp[i]] = [int(r_code),int(g_code),int(b_code)]
+    
+    return color_range
+
 
 # =============================================================================
 # Function Test Section (Temp)
@@ -119,14 +243,14 @@ def ppm_header(ascii_string, image_width, image_height):
 # Test Function 1 - Returns Filepath 
 test_filepath = pick_file_name()
 
-# Function 1 logic gate
 if test_filepath != None:
     
     # Test print 1
     print("\n" + test_filepath)
     
-    # Try to find the file with a failsafe through try
+    # Try to find the file with a failsafe through try, except and else
     try:
+        
         # Test Function 2 - Returns file contents
         test_file_contents, ascii_width, ascii_height = file_open(test_filepath)
         
@@ -135,5 +259,27 @@ if test_filepath != None:
     
     else:
         if test_file_contents != None:
+            
             # Test print 2
-            print("\n" + test_file_contents)
+            # print("\n" + test_file_contents)
+    
+            # Test Function 3 - Returns file PPM Header
+            ppm_header = create_ppm_header(test_file_contents, ascii_width, ascii_height)
+            
+            # Test print 3
+            print(ppm_header)
+            
+            # Test Function 4 - Returns Selected color RGB list
+            selected_rgb = color_selections()
+            
+            # Test print 4
+            print(selected_rgb)
+            
+            if selected_rgb[0] != None:
+                
+                # Test Function 5 - Returns Color Swatch Diction Corresponding to Ascii Depth
+                color_swatch = ascii_color_swatch(selected_rgb)
+                
+                print(color_swatch)
+            
+            
