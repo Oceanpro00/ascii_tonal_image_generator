@@ -21,7 +21,7 @@ Prime Targets:
 #       - Pick either an example Test file or user's own file
 # =============================================================================
 
-def pick_file_name():
+def pick_file_path():
     
     # Define Function 1 Variables
     test_file_names = ["ascii-art-leaffrog", "ascii-art-smallbanana", "ascii-art-treefrog"]
@@ -267,6 +267,57 @@ def output_ppm(name, header, contents, image_height, image_width):
         ppm_file.write(contents)
         print(f"\nAn image has been outputed to /image_outputs:\n\n  File Name: {name}.ppm\n  Image Height: {int(image_height/2)} pixels\n  Image Width: {image_width} pixels\n  Total Pixels: {(image_height/2) * image_width} pixels")
 
+
+# =============================================================================
+# Main Function
+# 
+#   - Calls all functions above with failsafes and such as tested below
+# =============================================================================
+
+def pixelize_ascii(name):
+    
+    # Function 1 - Determine File path
+    filepath = pick_file_path()
+    
+    if filepath != None:
+        try:
+            
+            # Function 2 - Open and Check File Contents
+            file_contents, ascii_width, ascii_height = file_open(filepath)
+            
+        except FileNotFoundError:
+            
+            print("\n**Failed** I'm Sorry, the file you requested was not found.\n\nPlease check\n   - the file directory again to make you didnt mistype the filename\n   - the file is in the right location.\nThen run me again!")
+        
+        else:
+            if file_contents!= None:
+                
+                # Function 3 - Create PPM file header string
+                ppm_header = create_ppm_header(ascii_width, ascii_height)
+                
+                # Function 4 - User Color Selection Tool
+                selected_rgb = color_selections()
+                
+                if selected_rgb[0] != None:
+                    
+                    # Function 5 - Map Color RGB codes to Ascii Characters based on Density
+                    color_swatch = ascii_color_swatch(selected_rgb)
+                    
+                    # Function 6 - Transcribe ASCII Art contents into ppm RGB codes
+                    ppm_contents = ppm_file_contents(file_contents, color_swatch)
+                    
+                    # Function 7 - Write and Output PPM File
+                    output_ppm(name, ppm_header, ppm_contents, ascii_height, ascii_width)
+
+
+# =============================================================================
+# RUN FUNCTION
+# =============================================================================
+
+pixelize_ascii("Final 001")
+
+
+
 # =============================================================================
 # Function Test Section (Temp)
 # 
@@ -276,9 +327,9 @@ def output_ppm(name, header, contents, image_height, image_width):
 #       - Try and Except may be best used around certain sections for certain error types
 # =============================================================================
 
-
+"""
 # Test Function 1 - Returns Filepath 
-test_filepath = pick_file_name()
+test_filepath = pick_file_path()
 
 if test_filepath != None:
     
@@ -289,7 +340,7 @@ if test_filepath != None:
     try:
         
         # Test Function 2 - Returns file contents
-        test_file_contents, ascii_width, ascii_height = file_open(test_filepath)
+        test_file_contents, test_ascii_width, test_ascii_height = file_open(test_filepath)
         
     except FileNotFoundError:
         print("\n**Failed** I'm Sorry, the file you requested was not found.\n\nPlease check\n   - the file directory again to make you didnt mistype the filename\n   - the file is in the right location.\nThen run me again!")
@@ -301,31 +352,32 @@ if test_filepath != None:
             # print("\n" + test_file_contents)
     
             # Test Function 3 - Returns file PPM Header
-            ppm_header = create_ppm_header(ascii_width, ascii_height)
+            test_ppm_header = create_ppm_header(test_ascii_width, test_ascii_height)
             
             # Test print 3
-            # print(ppm_header)
+            # print(test_ppm_header)
             
             # Test Function 4 - Returns Selected color RGB list
-            selected_rgb = color_selections()
+            test_selected_rgb = color_selections()
             
             # Test print 4
-            # print(selected_rgb)
+            # print(test_selected_rgb)
             
-            if selected_rgb[0] != None:
+            if test_selected_rgb[0] != None:
                 
-                # Test Function 5 - Returns Color Swatch Diction Corresponding to Ascii Depth
-                color_swatch = ascii_color_swatch(selected_rgb)
+                # Test Function 5 - Returns Color Swatch Diction Corresponding to Ascii Density
+                test_color_swatch = ascii_color_swatch(test_selected_rgb)
                 
                 # Test print 5
-                # print(color_swatch)
+                # print(test_color_swatch)
                 
                 # Test Function 6  - Returns the ascii art file converted into ppm structured RGB codes that represent pixels
-                ppm_contents = ppm_file_contents(test_file_contents, color_swatch)
+                test_ppm_contents = ppm_file_contents(test_file_contents, test_color_swatch)
                 
                 # Test print 6
-                # print(ppm_contents)
+                # print(test_ppm_contents)
                 
                 # Test Function 7 - Output ppm File 
-                output_ppm("test001", ppm_header, ppm_contents, ascii_height, ascii_width)
-            
+                output_ppm("test001", test_ppm_header, test_ppm_contents, test_ascii_height, test_ascii_width)
+
+"""
