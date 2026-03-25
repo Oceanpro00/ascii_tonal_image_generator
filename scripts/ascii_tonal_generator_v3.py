@@ -269,8 +269,9 @@ n_steps = len(character_ramp)
 # Single Color - Mono Color Swatch Creator
 def mono_color_swatch(color_selected):
     
-    # Declare Target Variable
+    # Declare Target Variables
     color_range = {}
+    mid_point = n_steps//2
 
     # for loop mapping ascii ramp to color range
     for i in range(n_steps):
@@ -280,18 +281,18 @@ def mono_color_swatch(color_selected):
                 r_code = 0
                 g_code = 0
                 b_code = 0
-            elif i < (n_steps/2-1):
-                r_code += (color_selected[0]) / (n_steps/2 - 1)
-                g_code += (color_selected[1]) / (n_steps/2 - 1)
-                b_code += (color_selected[2]) / (n_steps/2 - 1)
-            elif i >= (n_steps/2):
-                r_code += (255 - color_selected[0]) / (n_steps/2)
-                g_code += (255 - color_selected[1]) / (n_steps/2)
-                b_code += (255 - color_selected[2]) / (n_steps/2)
-            else:
+            elif i < (mid_point-1):
+                r_code += (color_selected[0]) / (mid_point - 1)
+                g_code += (color_selected[1]) / (mid_point - 1)
+                b_code += (color_selected[2]) / (mid_point - 1)
+            elif i in [mid_point-1,mid_point]:
                 r_code = color_selected[0]
                 g_code = color_selected[1]
                 b_code = color_selected[2]
+            elif i > (mid_point):
+                r_code += (255 - color_selected[0]) / (mid_point)
+                g_code += (255 - color_selected[1]) / (mid_point)
+                b_code += (255 - color_selected[2]) / (mid_point)
         
         # Odd Length Lists
         else:
@@ -299,18 +300,18 @@ def mono_color_swatch(color_selected):
                 r_code = 0
                 g_code = 0
                 b_code = 0
-            elif i < (n_steps/2):
-                r_code += (color_selected[0]) / (n_steps/2)
-                g_code += (color_selected[1]) / (n_steps/2)
-                b_code += (color_selected[2]) / (n_steps/2)
-            elif i >= (n_steps/2):
-                r_code += (255 - color_selected[0]) / (n_steps/2)
-                g_code += (255 - color_selected[1]) / (n_steps/2)
-                b_code += (255 - color_selected[2]) / (n_steps/2)
-            else:
+            elif i < (mid_point):
+                r_code += (color_selected[0]) / (mid_point)
+                g_code += (color_selected[1]) / (mid_point)
+                b_code += (color_selected[2]) / (mid_point)
+            elif i == (mid_point):
                 r_code = color_selected[0]
                 g_code = color_selected[1]
                 b_code = color_selected[2]
+            elif i > (mid_point):
+                r_code += (255 - color_selected[0]) / (mid_point)
+                g_code += (255 - color_selected[1]) / (mid_point)
+                b_code += (255 - color_selected[2]) / (mid_point)
         
         color_range[character_ramp[i]] = [int(r_code),int(g_code),int(b_code)]
     
@@ -320,10 +321,10 @@ def mono_color_swatch(color_selected):
 # Two Colors - Duo Color Swatch Creator
 def duo_color_swatch(color_one, color_two):
     
-    # Declare Target Variables
+    # Declare Target Variable
     color_range = {}
     
-    # # for loop mapping ascii ramp to color range
+    # for loop mapping ascii ramp to color range
     for i in range(n_steps):
         if i == 0:
             r_code = color_one[0]
@@ -339,6 +340,57 @@ def duo_color_swatch(color_one, color_two):
     return color_range
 
 
+# Three Colors - Tri Color Swatch Creator
+def tri_color_swatch(color_one, color_two, color_three):
+    
+    # Declare Target Variable
+    color_range = {}
+    mid_point = n_steps//2
+    
+    # For Loop napping ascii ramp to color ranges
+    for i in range(n_steps):
+        # Even Length Lists
+        if n_steps % 2 ==0:
+            if i == 0:
+                r_code = color_one[0]
+                g_code = color_one[1]
+                b_code = color_one[2]
+            elif i < (mid_point-1):
+                r_code += (color_two[0] - color_one[0]) / (mid_point - 1)
+                g_code += (color_two[1] - color_one[1]) / (mid_point - 1)
+                b_code += (color_two[2] - color_one[2]) / (mid_point - 1)
+            elif i in [mid_point-1, mid_point]:
+                r_code = color_two[0]
+                g_code = color_two[1]
+                b_code = color_two[2]
+            elif i > (mid_point):
+                r_code += (color_three[0] - color_two[0]) / (mid_point - 1)
+                g_code += (color_three[1] - color_two[1]) / (mid_point - 1)
+                b_code += (color_three[2] - color_two[2]) / (mid_point - 1)
+        
+        # Odd Length Lists
+        else:
+            if i == 0:
+                r_code = color_one[0]
+                g_code = color_one[1]
+                b_code = color_one[2]
+            elif i < (mid_point):
+                r_code += (color_two[0] - color_one[0]) / (mid_point)
+                g_code += (color_two[1] - color_one[1]) / (mid_point)
+                b_code += (color_two[2] - color_one[2]) / (mid_point)
+            elif i == (mid_point):
+                r_code = color_two[0]
+                g_code = color_two[1]
+                b_code = color_two[2]
+            elif i > (mid_point):
+                r_code += (color_three[0] - color_two[0]) / (mid_point)
+                g_code += (color_three[1] - color_two[1]) / (mid_point)
+                b_code += (color_three[2] - color_two[2]) / (mid_point)
+        
+        color_range[character_ramp[i]] = [int(r_code),int(g_code),int(b_code)]
+    
+    return color_range
+
 
 # =============================================================================
 # Function 6: Color System Selection Function
@@ -353,7 +405,7 @@ def duo_color_swatch(color_one, color_two):
 def pick_color_system():
     
     # Initial Question
-    color_system_toggle = input("\nVery Nice!! Which Color system would you like to use?\n\nWe have:\n   0  - Mono Tone Color System\n   1  - Duo Tone Color System\n\nInput:\n")
+    color_system_toggle = input("\nVery Nice!! Which Color system would you like to use?\n\nWe have:\n   0  - Mono Tone Color System\n   1  - Duo Tone Color System\n   2  - Tri Tone Color System\n\nInput:\n")
     
     # Mono Tone System
     if color_system_toggle == "0":
@@ -372,15 +424,33 @@ def pick_color_system():
         print("\nGreat, we will need you to pick TWO colors!")
         
         # Select Colors
-        print("\nPick First Color")
+        print("\nPick First Color  -  SHADOWS")
         color_1 = color_selection()
         
-        print("\nPick Second Color")
+        print("\nPick Second Color  -  HIGHTLIGHTS")
         color_2 = color_selection()
         
         # Run Color System Function
         if color_1 != None or color_2 != None:
             return duo_color_swatch(color_1, color_2)
+        
+    # Three Tone System
+    if color_system_toggle == "2":
+        print("\nGreat, we will need you to pick THREE colors!")
+        
+        # Select Colors
+        print("\nPick First Color  -  SHADOWS")
+        color_1 = color_selection()
+        
+        print("\nPick Second Color  -  MIDTONES")
+        color_2 = color_selection()
+         
+        print("\nPick Third Color  -  HIGHLIGHTS")
+        color_3 = color_selection()
+        
+        # Run Color System Function
+        if color_1 != None or color_2 != None or color_3 != None:
+            return tri_color_swatch(color_1, color_2, color_3)
     
 # =============================================================================
 # Function 7: PPM String Generator
