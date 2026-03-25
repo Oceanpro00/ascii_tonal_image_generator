@@ -183,7 +183,7 @@ def color_selection():
           
     # ** Prompting Color Selection **
     # User input
-    user_color_selection = input("What color would you like to use today?\n\nInput:\n")
+    user_color_selection = input("What color would you like to use today?\n\nInput:\n").lower()
     
     # While Loop Parsing and/ or Confirming Color Selection
     while len(color_selected) < 1:
@@ -208,7 +208,7 @@ def color_selection():
                 while check_one == "n":
                     
                     # Printing potential options by page/ groups of 5
-                    print("Could it be any of:")
+                    print("\nCould it be any of:")
                     for i in range((page-1)*5, page * 5):
                         print(f"   {i}  - {potentials[i]}")
                     print(f"\npage# ({page}/{(len(potentials)//5)})\n")
@@ -220,7 +220,7 @@ def color_selection():
                         page = 1
                     
                     # Option Selection
-                    check_one = input("Do you see the color you wanted above?\n   y  - If yes, Please Input the number listed with the color above\n   n  - For next page, Please input n\n   q  - To quit, Please Input q\n\nInput:\n")
+                    check_one = input("Do you see the color you wanted above?\n   #  - If yes, Please Input the number listed with the color above\n   n  - For next page, Please input n\n   q  - To quit, Please Input q\n\nInput:\n")
                     
                 # Make sure entry is viable 
                 if check_one.isdigit():
@@ -236,9 +236,9 @@ def color_selection():
                 if check_two == "1":
                     user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
                 elif check_two == "2":
-                    red_code = int(input("\nThe Red decimal code (0 - 255) in the RGB is\n\nInput:\n"))
-                    green_code = int(input("\nThe Green decimal code (0 - 255) in the RGB is\n\nInput:\n"))
-                    blue_code = int(input("\nThe Blue decimal code (0 - 255) in the RGB is\n\nInput:\n"))
+                    red_code = min(int(input("\nThe Red decimal code (0 - 255) in the RGB is\n\nInput:\n")), 255)
+                    green_code = min(int(input("\nThe Green decimal code (0 - 255) in the RGB is\n\nInput:\n")), 255)
+                    blue_code = min(int(input("\nThe Blue decimal code (0 - 255) in the RGB is\n\nInput:\n")), 255)
                     color_selected.append(red_code)
                     color_selected.append(green_code)
                     color_selected.append(blue_code)
@@ -254,6 +254,10 @@ def color_selection():
 # 
 #   - Creates a Dictionare relating the Defined Ascii Character Ramp to RGB color codes
 #       - Purpose made functions for each Color System
+#   - Systems Built
+#       - Mono Tone (essentially just a singular hue tonal gradient)
+#       - Duo Tone
+#       - Tri Tone
 #
 # Output:
 #
@@ -524,7 +528,7 @@ def pixelize_ascii():
                 # Function 3 - Create PPM file header string
                 ppm_header = create_ppm_header(ascii_width, ascii_height)
                 
-                # Function 6 - Color System Selector % Runner
+                # Function 6 - Color System Selector & Runner
                 # Functions 4 - Color Selection & Function 5 - Color Mapper are Called within Function 6
                 color_swatch = pick_color_system()
                 
