@@ -9,7 +9,7 @@ Prime Targets:
     - Clean up v1 Function logic
         - Split each logi part of the function into seperate functions
         - Have 1 function call all other functions thus giving us cleaner code
-    - Add other color ways
+    - Add other color ways (Will be done in v3)
 
 @author: seanschallberger
 """
@@ -24,7 +24,7 @@ Prime Targets:
 def pick_file_path():
     
     # Define Function 1 Variables
-    test_file_names = ["ascii-art-leaffrog", "ascii-art-smallbanana", "ascii-art-treefrog"]
+    test_file_names = ["ascii-art-treefrog", "ascii-art-sunset", "ascii-art-chameleon", "ascii-art-geometric-circle", "ascii-art-marilyn"]
     chosen_filepath = ""
     
     # Start Up Statement
@@ -37,12 +37,18 @@ def pick_file_path():
     else:
         name = input("\nThats awesome! What would you like to name the file?\n\nInput:\n")
         test_or_custom = input("\nIncredible name! do you want to generate one using one of the example test files or your own ascii art file??\n\nPlease Input 0/1\n  0  -  Use a test file\n  1  -  Use your own file\n\nInput:\n")
+        
+        # Ensure Correct Input
+        while test_or_custom not in ["0","1"]:
+                test_or_custom = input(f"\n{test_or_custom} is not a viable input.\n\nPlease Input 0/1\n  0  -  Use a test file\n  1  -  Use your own file\n\nInput:\n")
+        
         if test_or_custom == "0":
             print("\nOkay input the file number you want to test!")
             for i in range(len(test_file_names)):
                 print(f'  {i}  - "{test_file_names[i]}"')
             chosen_filepath = "../ascii_example_art/" + test_file_names[int(input("\nInput:\n"))] + ".txt"
-        else:
+        
+        elif test_or_custom == "1":
             print("\nOkay lets do this! so First:\nPlease do make sure the file is\n   - in the same directory as this '.py' file\n   - you dont mistype your '.txt' file name!\n\nWhats your file's name?")
             custom_filepath = input("\nInput:\n")
             if ".txt" in custom_filepath:
@@ -191,7 +197,7 @@ def color_selection():
                     else:
                         page = 1
                     
-                    check_one = input("Do you see the color you wanted above?\n   If yes,   Please Input the number listed with the color above\n   For next page,   Please input n\n   To quit,   Please Input q\n\nInput:\n")
+                    check_one = input("Do you see the color you wanted above?\n   y  - If yes, Please Input the number listed with the color above\n   n  - For next page, Please input n\n   q  - To quit, Please Input q\n\nInput:\n")
                     
                 # Make sure entry is viable 
                 if check_one.isdigit():
