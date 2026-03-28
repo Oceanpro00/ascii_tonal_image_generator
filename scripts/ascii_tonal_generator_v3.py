@@ -209,12 +209,17 @@ def color_selection():
                     
                     # Printing potential options by page/ groups of 5
                     print("\nCould it be any of:")
-                    for i in range((page-1)*5, page * 5):
+                    start_point = (page-1) * 5
+                    ending_point = min(start_point + 5, len(potentials))
+                    total_pages = (len(potentials) + 4) // 5
+                    
+                    for i in range(start_point, ending_point):
                         print(f"   {i}  - {potentials[i]}")
-                    print(f"\npage# ({page}/{(len(potentials)//5)})\n")
+                        
+                    print(f"\npage# ({page}/{total_pages})\n")
                     
                     # Cycle pages
-                    if page < (len(potentials)//5):
+                    if page < total_pages:
                         page += 1
                     else:
                         page = 1
@@ -227,11 +232,11 @@ def color_selection():
                     color_selected = colors[potentials[min((int(check_one)), (len(potentials) - 1))]]
                 
                 else:
-                    color_selected.append(None)
+                    return None
                     
             else:
                 # Default Last Check
-                check_two = input("\nOkay Sorry I guess we really don't have '{user_color_selection}' in our dataset.\nWould you like to retry with another color, input an RGB code directly or Give up?\n\nPlease Input 1 or 2 or 3\n  1  - Retry\n  2  - Input RGB\n  3  - Give Up\n\nInput:\n")
+                check_two = input(f"\nOkay Sorry I guess we really don't have '{user_color_selection}' in our dataset.\nWould you like to retry with another color, input an RGB code directly or Give up?\n\nPlease Input 1 or 2 or 3\n  1  - Retry\n  2  - Input RGB\n  3  - Give Up\n\nInput:\n")
                 
                 if check_two == "1":
                     user_color_selection = input("\nWhat color would you like to use today?\n\nInput:\n")
@@ -243,7 +248,7 @@ def color_selection():
                     color_selected.append(green_code)
                     color_selected.append(blue_code)
                 else:
-                    color_selected.append(None)
+                    return None
        
     # Return Color RGB Selection 
     return(color_selected)
@@ -435,7 +440,7 @@ def pick_color_system():
         color_2 = color_selection()
         
         # Run Color System Function
-        if color_1 != None or color_2 != None:
+        if color_1 != None and color_2 != None:
             return duo_color_swatch(color_1, color_2)
         
     # Three Tone System
@@ -453,7 +458,7 @@ def pick_color_system():
         color_3 = color_selection()
         
         # Run Color System Function
-        if color_1 != None or color_2 != None or color_3 != None:
+        if color_1 != None and color_2 != None and color_3 != None:
             return tri_color_swatch(color_1, color_2, color_3)
     
 # =============================================================================
@@ -520,7 +525,7 @@ def pixelize_ascii():
             
         except FileNotFoundError:
             
-            print("\n**Failed** I'm Sorry, the file you requested was not found.\n\nPlease check\n   - the file directory again to make you didnt mistype the filename\n   - the file is in the right location.\nThen run me again!")
+            print("\n**Failed** I'm Sorry, the file you requested was not found.\n\nPlease check\n   - the file directory again to make you didnt mistype the filename\n   - the file is in the right location.\nThen run me again!\n\n p.s. (https://vaultandzn.com/pages/ascii-art-generator) makes great Ascii art out of images!")
         
         else:
             if file_contents!= None:
