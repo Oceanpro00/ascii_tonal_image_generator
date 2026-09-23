@@ -271,7 +271,7 @@ def color_selection():
 
 # Global Variable
 # Define Base Character Ramp and Length
-character_ramp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
+character_ramp = '$RgH@B%8E&WNM#D*oa4F3e2Vhk5bAdG96pqKwmZO0QLCyJUSYsXPzcvuTnxrjft/\|(=)1{}[]?-_+~<>i!l7I;:,"^`' + "'. "
 n_steps = len(character_ramp)
 
 
